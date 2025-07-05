@@ -4,3 +4,9 @@ compatibility_date = "2023-08-23"
 
 [unsafe.metadata.observability]
 enabled = true
+
+# D1 Database
+[[d1_databases]]
+binding = "DB" # available in your Worker on env.DB
+database_name = "ztnaas-db"
+database_id = "3e927505-e847-4b4b-897e-31aa2642dcce"

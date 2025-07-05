@@ -9,5 +9,9 @@
 	},
 	"devDependencies": {
 		"wrangler": "^4.23.0"
+	},
+	"dependencies": {
+		"itty-router": "^5.0.18",
+		"nanoid": "^5.1.5"
 	}
 }

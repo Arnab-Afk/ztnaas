@@ -1,3 +1,9 @@
+import { Router } from 'itty-router';
+import { handleOrganizations } from './handlers/organizations';
+import { handleNetworks } from './handlers/networks';
+import { handlePolicies } from './handlers/policies';
+import { corsHeaders } from './utils/headers';
+
 /**
  * Welcome to Cloudflare Workers! This is your first worker.
  *
@@ -8,9 +14,45 @@
  * Learn more at https://developers.cloudflare.com/workers/
  */
 
+// Create a new router
+const router = Router();
+
+// CORS preflight handler
+router.options('*', async (request) => {
+  return new Response(null, { headers: corsHeaders });
+});
+
+// Organization routes
+router.get('/api/organizations', handleOrganizations.list);
+router.post('/api/organizations', handleOrganizations.create);
+router.get('/api/organizations/:id', handleOrganizations.get);
+router.put('/api/organizations/:id', handleOrganizations.update);
+router.delete('/api/organizations/:id', handleOrganizations.remove);
+
+// Network routes
+router.get('/api/networks', handleNetworks.list);
+router.post('/api/networks', handleNetworks.create);
+router.get('/api/networks/:id', handleNetworks.get);
+router.put('/api/networks/:id', handleNetworks.update);
+router.delete('/api/networks/:id', handleNetworks.remove);
+
+// Policy routes
+router.get('/api/policies', handlePolicies.list);
+router.post('/api/policies', handlePolicies.create);
+router.get('/api/policies/:id', handlePolicies.get);
+router.put('/api/policies/:id', handlePolicies.update);
+router.delete('/api/policies/:id', handlePolicies.remove);
+
+// 404 handler
+router.all('*', () => new Response('Not Found', { status: 404 }));
 
 export default {
   async fetch(request, env, ctx) {
-    return new Response('Hello Worl');
-  },
+    try {
+      // Handle the request with our router
+      return await router.handle(request, env, ctx);
+    } catch (e) {
+      return new Response(`Server Error: ${e.message}`, { status: 500 });
+    }
+  }
 };
