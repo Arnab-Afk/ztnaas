@@ -3,6 +3,7 @@
 import React, { useState, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ModeToggle } from "@/components/mode-toggle";
 import { 
   BarChart3, 
   Network, 
@@ -39,21 +40,21 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-background">
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-white border-r border-gray-200 transition-all duration-300 flex flex-col`}>
+      <div className={`${sidebarOpen ? 'w-64' : 'w-20'} bg-card border-r border-border transition-all duration-300 flex flex-col`}>
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           {sidebarOpen ? (
             <div className="flex items-center space-x-2">
-              <Shield className="h-6 w-6 text-indigo-600" />
+              <Shield className="h-6 w-6 text-primary" />
               <span className="font-bold text-lg">ZTNaaS</span>
             </div>
           ) : (
-            <Shield className="h-6 w-6 text-indigo-600 mx-auto" />
+            <Shield className="h-6 w-6 text-primary mx-auto" />
           )}
           <button 
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-1 rounded-md hover:bg-gray-100"
+            className="p-1 rounded-md hover:bg-accent"
           >
             {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -64,7 +65,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <li key={item.name}>
                 <Link 
                   href={item.href}
-                  className={`flex items-center ${sidebarOpen ? 'justify-start' : 'justify-center'} px-3 py-2 rounded-md ${item.href === pathname ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-100'}`}
+                  className={`flex items-center ${sidebarOpen ? 'justify-start' : 'justify-center'} px-3 py-2 rounded-md ${item.href === pathname ? 'bg-accent text-accent-foreground' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'}`}
                 >
                   {item.icon}
                   {sidebarOpen && <span className="ml-3">{item.name}</span>}
@@ -73,25 +74,21 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             ))}
           </ul>
         </nav>
-        <div className="p-4 border-t border-gray-200">
-          <div className={`flex ${sidebarOpen ? 'justify-between' : 'justify-center'} items-center`}>
+        <div className="p-4 border-t border-border">
+          <div className={`flex ${sidebarOpen ? 'justify-between' : 'justify-center'} items-center gap-2`}>
             {sidebarOpen && (
               <div className="flex items-center space-x-2">
-                <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">A</div>
+                <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold">A</div>
                 <div>
-                  <p className="text-sm font-medium">Admin User</p>
-                  <p className="text-xs text-gray-500">admin@ztnaas.com</p>
+                  <p className="text-sm font-medium text-foreground">Admin User</p>
+                  <p className="text-xs text-muted-foreground">admin@ztnaas.com</p>
                 </div>
               </div>
             )}
             {!sidebarOpen && (
-              <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold">A</div>
+              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold">A</div>
             )}
-            {sidebarOpen && (
-              <button className="text-gray-400 hover:text-gray-600">
-                <Settings className="h-5 w-5" />
-              </button>
-            )}
+            <ModeToggle />
           </div>
         </div>
       </div>

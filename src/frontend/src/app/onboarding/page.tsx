@@ -81,23 +81,27 @@ export default function OnboardingPage() {
     },
   });
 
-  const updateFormData = (section: FormSection, data: Record<string, any>) => {
+  const updateFormData = <T extends FormSection>(section: T, data: Partial<FormData[T]>) => {
     setFormData((prev: FormData) => {
-      const currentSectionData = prev[section];
-      const updatedSection = { ...currentSectionData, ...data };
-      return {
-        ...prev,
-        [section]: updatedSection
-      };
+      // Create a copy of the previous form data
+      const newFormData = { ...prev };
+      
+      // Type assertion to handle the nested object update
+      const sectionData = newFormData[section] as Record<string, unknown>;
+      
+      // Update the section with new data
+      newFormData[section] = { ...sectionData, ...data } as FormData[T];
+      
+      return newFormData;
     });
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-16">
+    <main className="min-h-screen bg-background py-16">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-semibold tracking-tight mb-3">{steps[step].title}</h1>
-          <p className="text-gray-500 mb-6 text-lg">{steps[step].description}</p>
+          <p className="text-muted-foreground mb-6 text-lg">{steps[step].description}</p>
           
           {/* Progress indicator */}
           <div className="mb-6">
@@ -107,7 +111,7 @@ export default function OnboardingPage() {
                 <div
                   key={s.id}
                   className={`w-2.5 h-2.5 rounded-full transition-colors ${
-                    i === step ? "bg-blue-600" : i < step ? "bg-blue-200" : "bg-gray-200"
+                    i === step ? "bg-primary" : i < step ? "bg-primary/25" : "bg-muted"
                   }`}
                 />
               ))}
@@ -479,11 +483,13 @@ export default function OnboardingPage() {
                         <Checkbox 
                           id="ddos-protection" 
                           checked={formData.security.features.ddosProtection}
-                          onCheckedChange={(checked: boolean) => 
-                            updateFormData("security", { 
-                              features: { ...formData.security.features, ddosProtection: checked }
-                            })
-                          }
+                          onCheckedChange={(checked: boolean) => {
+                            const updatedFeatures: SecurityFeatures = {
+                              ...formData.security.features,
+                              ddosProtection: checked
+                            };
+                            updateFormData("security", { features: updatedFeatures });
+                          }}
                           className={`h-5 w-5 ${formData.security.features.ddosProtection ? 'text-indigo-600' : 'text-slate-300'}`}
                         />
                       </div>
@@ -509,11 +515,13 @@ export default function OnboardingPage() {
                         <Checkbox 
                           id="threat-intelligence" 
                           checked={formData.security.features.threatIntelligence}
-                          onCheckedChange={(checked: boolean) => 
-                            updateFormData("security", { 
-                              features: { ...formData.security.features, threatIntelligence: checked }
-                            })
-                          }
+                          onCheckedChange={(checked: boolean) => {
+                            const updatedFeatures: SecurityFeatures = {
+                              ...formData.security.features,
+                              threatIntelligence: checked
+                            };
+                            updateFormData("security", { features: updatedFeatures });
+                          }}
                           className={`h-5 w-5 ${formData.security.features.threatIntelligence ? 'text-indigo-600' : 'text-slate-300'}`}
                         />
                       </div>
@@ -539,11 +547,13 @@ export default function OnboardingPage() {
                         <Checkbox 
                           id="analytics" 
                           checked={formData.security.features.analytics}
-                          onCheckedChange={(checked: boolean) => 
-                            updateFormData("security", { 
-                              features: { ...formData.security.features, analytics: checked }
-                            })
-                          }
+                          onCheckedChange={(checked: boolean) => {
+                            const updatedFeatures: SecurityFeatures = {
+                              ...formData.security.features,
+                              analytics: checked
+                            };
+                            updateFormData("security", { features: updatedFeatures });
+                          }}
                           className={`h-5 w-5 ${formData.security.features.analytics ? 'text-indigo-600' : 'text-slate-300'}`}
                         />
                       </div>

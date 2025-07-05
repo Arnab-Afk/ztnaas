@@ -17,6 +17,7 @@ import {
   CardHeader, 
   CardTitle 
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function DashboardPage() {
   // Mock data for dashboard metrics
@@ -35,12 +36,12 @@ export default function DashboardPage() {
           {metrics.map((metric) => (
             <Card key={metric.title} className="shadow-sm hover:shadow-md transition-shadow">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium text-gray-500">{metric.title}</CardTitle>
+                <CardTitle className="text-sm font-medium text-muted-foreground">{metric.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex justify-between items-end">
                   <div className="text-2xl font-bold">{metric.value}</div>
-                  <div className={`flex items-center text-sm ${metric.trend === 'up' ? 'text-green-600' : 'text-red-600'}`}>
+                  <div className={`flex items-center text-sm ${metric.trend === 'up' ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}`}>
                     {metric.change}
                   </div>
                 </div>
@@ -57,16 +58,18 @@ export default function DashboardPage() {
             <CardDescription>Current status of all networks</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64 flex items-center justify-center border rounded bg-gray-50">
-              <p className="text-gray-500">Network status visualization will appear here</p>
+            <div className="h-64 flex items-center justify-center border rounded bg-muted/50">
+              <p className="text-muted-foreground">Network status visualization will appear here</p>
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <span className="text-sm text-gray-500">Last updated: 5 minutes ago</span>
-            <Link href="/network-visualization" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-              View Details
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Link>
+            <span className="text-sm text-muted-foreground">Last updated: 5 minutes ago</span>
+            <Button variant="link" asChild>
+              <Link href="/network-visualization" className="flex items-center">
+                View Details
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Link>
+            </Button>
           </CardFooter>
         </Card>
 
@@ -76,16 +79,18 @@ export default function DashboardPage() {
             <CardDescription>Recent security alerts and events</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64 flex items-center justify-center border rounded bg-gray-50">
-              <p className="text-gray-500">Security events visualization will appear here</p>
+            <div className="h-64 flex items-center justify-center border rounded bg-muted/50">
+              <p className="text-muted-foreground">Security events visualization will appear here</p>
             </div>
           </CardContent>
           <CardFooter className="flex justify-between">
-            <span className="text-sm text-gray-500">Last updated: 2 minutes ago</span>
-            <Link href="/security-analytics" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center">
-              View Details
-              <ChevronRight className="h-4 w-4 ml-1" />
-            </Link>
+            <span className="text-sm text-muted-foreground">Last updated: 2 minutes ago</span>
+            <Button variant="link" asChild>
+              <Link href="/security-analytics" className="flex items-center">
+                View Details
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Link>
+            </Button>
           </CardFooter>
         </Card>
       </div>
@@ -107,9 +112,9 @@ export default function DashboardPage() {
                 <Link 
                   key={action.name} 
                   href={action.href}
-                  className="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center p-4 border rounded-lg hover:bg-accent transition-colors"
                 >
-                  <div className="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mb-2">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
                     {action.icon}
                   </div>
                   <span className="text-sm font-medium">{action.name}</span>
@@ -122,4 +127,3 @@ export default function DashboardPage() {
     </>
   );
 }
-

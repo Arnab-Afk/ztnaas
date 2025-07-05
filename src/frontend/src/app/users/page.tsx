@@ -13,14 +13,14 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-6">
+      <div className="bg-muted/50 p-4 rounded-lg border  mb-6">
         <div className="flex items-start space-x-4">
           <div className="bg-indigo-100 p-2 rounded-full">
             <Users className="h-6 w-6 text-indigo-600" />
           </div>
           <div>
             <h2 className="text-lg font-medium mb-1">User Management</h2>
-            <p className="text-slate-600">
+            <p>
               Manage users, roles, and permissions for your ZTNaaS deployment.
             </p>
           </div>
@@ -30,20 +30,20 @@ export default function UsersPage() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <Search className="w-4 h-4 text-gray-500" />
+            <Search className="w-4 h-4 " />
           </div>
           <input 
             type="search" 
-            className="block w-full p-2 pl-10 text-sm border border-gray-300 rounded-lg bg-white focus:ring-indigo-500 focus:border-indigo-500" 
+            className="block w-full p-2 pl-10 text-sm  rounded-lg border " 
             placeholder="Search users..."
           />
         </div>
         <div className="flex items-center space-x-2">
-          <button className="flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md border border-gray-300 bg-white hover:bg-gray-50">
+          <button className="flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md border">
             <Filter className="h-4 w-4" />
             <span>Filter</span>
           </button>
-          <button className="flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
+          <button className="flex items-center space-x-2 px-3 py-2 text-sm font-medium rounded-md border">
             <UserPlus className="h-4 w-4" />
             <span>Add User</span>
           </button>
@@ -58,7 +58,7 @@ export default function UsersPage() {
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+              <thead className="text-xs uppercase">
                 <tr>
                   <th scope="col" className="px-6 py-3">Name</th>
                   <th scope="col" className="px-6 py-3">Email</th>
@@ -70,8 +70,8 @@ export default function UsersPage() {
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id} className="bg-white border-b hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900">{user.name}</td>
+                  <tr key={user.id} className=" border">
+                    <td className="px-6 py-4 font-medium ">{user.name}</td>
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">
                       <span className="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded-full">

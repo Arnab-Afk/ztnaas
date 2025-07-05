@@ -5,14 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 export default function SettingsPage() {
   return (
     <div className="space-y-6">
-      <div className="bg-slate-50 p-4 rounded-lg border border-slate-200 mb-6">
+      <div className="bg-muted/50 p-4 rounded-lg border  mb-6">
         <div className="flex items-start space-x-4">
           <div className="bg-indigo-100 p-2 rounded-full">
             <Settings className="h-6 w-6 text-indigo-600" />
           </div>
           <div>
             <h2 className="text-lg font-medium mb-1">System Settings</h2>
-            <p className="text-slate-600">
+            <p className="text-muted-foreground">
               Configure global settings for your ZTNaaS deployment. These settings affect the entire system.
             </p>
           </div>
@@ -29,9 +29,9 @@ export default function SettingsPage() {
             <CardDescription>Basic system configuration</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="p-6 border rounded-md bg-slate-50 flex flex-col items-center justify-center text-center">
+            <div className="p-6 border rounded-md bg-muted/50 flex flex-col items-center justify-center text-center">
               <AlertTriangle className="h-10 w-10 text-amber-500 mb-2" />
-              <p className="text-slate-600">General settings configuration will be available in the next release.</p>
+              <p className="text-muted-foreground">General settings configuration will be available in the next release.</p>
             </div>
           </CardContent>
         </Card>
@@ -45,9 +45,9 @@ export default function SettingsPage() {
             <CardDescription>Alert and notification settings</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="p-6 border rounded-md bg-slate-50 flex flex-col items-center justify-center text-center">
+            <div className="p-6 border rounded-md bg-muted/50 flex flex-col items-center justify-center text-center">
               <AlertTriangle className="h-10 w-10 text-amber-500 mb-2" />
-              <p className="text-slate-600">Notification settings will be available in the next release.</p>
+              <p className="text-muted-foreground">Notification settings will be available in the next release.</p>
             </div>
           </CardContent>
         </Card>
@@ -61,9 +61,9 @@ export default function SettingsPage() {
             <CardDescription>System security settings</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="p-6 border rounded-md bg-slate-50 flex flex-col items-center justify-center text-center">
+            <div className="p-6 border rounded-md bg-muted/50 flex flex-col items-center justify-center text-center">
               <AlertTriangle className="h-10 w-10 text-amber-500 mb-2" />
-              <p className="text-slate-600">Security settings will be available in the next release.</p>
+              <p className="text-muted-foreground">Security settings will be available in the next release.</p>
             </div>
           </CardContent>
         </Card>
@@ -77,9 +77,9 @@ export default function SettingsPage() {
             <CardDescription>Data backup configuration</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="p-6 border rounded-md bg-slate-50 flex flex-col items-center justify-center text-center">
+            <div className="p-6 border rounded-md flex flex-col items-center justify-center text-center bg-muted/50">
               <AlertTriangle className="h-10 w-10 text-amber-500 mb-2" />
-              <p className="text-slate-600">Backup settings will be available in the next release.</p>
+              <p className="text-muted-foreground">Backup settings will be available in the next release.</p>
             </div>
           </CardContent>
         </Card>
@@ -93,9 +93,9 @@ export default function SettingsPage() {
             <CardDescription>Maintenance and updates</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="p-6 border rounded-md bg-slate-50 flex flex-col items-center justify-center text-center">
+            <div className="p-6 border rounded-md bg-muted/50 flex flex-col items-center justify-center text-center">
               <AlertTriangle className="h-10 w-10 text-amber-500 mb-2" />
-              <p className="text-slate-600">Maintenance settings will be available in the next release.</p>
+              <p className="text-muted-foreground">Maintenance settings will be available in the next release.</p>
             </div>
           </CardContent>
         </Card>
@@ -109,20 +109,20 @@ export default function SettingsPage() {
         <CardContent>
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-slate-50 rounded-md">
-                <p className="text-sm font-medium text-slate-500 mb-1">Version</p>
+              <div className="p-4 bg-muted/50 rounded-md">
+                <p className="text-sm font-medium mb-1">Version</p>
                 <p className="font-medium">ZTNaaS Enterprise v1.0.0</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-md">
-                <p className="text-sm font-medium text-slate-500 mb-1">Last Updated</p>
+              <div className="p-4 bg-muted/50 rounded-md">
+                <p className="text-sm font-medium mb-1">Last Updated</p>
                 <p className="font-medium">June 15, 2023</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-md">
-                <p className="text-sm font-medium text-slate-500 mb-1">License</p>
+              <div className="p-4 bg-muted/50 rounded-md">
+                <p className="text-sm font-medium mb-1">License</p>
                 <p className="font-medium">Enterprise (Valid until Dec 31, 2023)</p>
               </div>
-              <div className="p-4 bg-slate-50 rounded-md">
-                <p className="text-sm font-medium text-slate-500 mb-1">Support</p>
+              <div className="p-4 bg-muted/50 rounded-md">
+                <p className="text-sm font-medium mb-1">Support</p>
                 <p className="font-medium">Premium Support Plan</p>
               </div>
             </div>
