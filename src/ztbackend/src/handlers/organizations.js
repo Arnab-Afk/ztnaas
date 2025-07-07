@@ -1,17 +1,37 @@
 import { corsHeaders } from '../utils/headers';
-import { nanoid } from 'nanoid';
+
+// Replace nanoid with a simpler UUID generator to avoid dependency issues
+function generateId() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
 export const handleOrganizations = {
   async list(request, env) {
     try {
-      const { results } = await env.DB.prepare(
+      // Add a timeout to ensure we don't hang
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Database query timed out')), 5000);
+      });
+      
+      const queryPromise = env.DB.prepare(
         'SELECT * FROM organizations ORDER BY created_at DESC'
       ).all();
       
-      return new Response(JSON.stringify({ organizations: results || [] }), {
+      // Race the database query against the timeout
+      const { results } = await Promise.race([queryPromise, timeoutPromise]);
+      
+      return new Response(JSON.stringify({ 
+        organizations: results || [],
+        count: (results || []).length
+      }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     } catch (error) {
+      console.error('Organization list error:', error);
       return new Response(JSON.stringify({ error: 'Failed to list organizations', details: error.message }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -56,7 +76,7 @@ export const handleOrganizations = {
         });
       }
 
-      const id = nanoid();
+      const id = generateId(); // Use our simple UUID generator instead of nanoid
       const timestamp = new Date().toISOString();
 
       // Insert the organization
@@ -76,6 +96,7 @@ export const handleOrganizations = {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     } catch (error) {
+      console.error('Organization create error:', error);
       return new Response(JSON.stringify({ error: 'Failed to create organization', details: error.message }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
