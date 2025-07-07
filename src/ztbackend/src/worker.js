@@ -49,10 +49,27 @@ router.all('*', () => new Response('Not Found', { status: 404 }));
 export default {
   async fetch(request, env, ctx) {
     try {
-      // Handle the request with our router
-      return await router.handle(request, env, ctx);
+      // Create a timeout for the entire request to prevent hanging
+      const timeout = new Promise((_, reject) => {
+        ctx.waitUntil(new Promise((resolve) => {
+          setTimeout(() => {
+            reject(new Error('Request timed out'));
+            resolve();
+          }, 8000); // 8 second global timeout (slightly longer than individual DB timeouts)
+        }));
+      });
+      
+      // Race the router against the timeout
+      return await Promise.race([
+        router.handle(request, env, ctx),
+        timeout
+      ]);
     } catch (e) {
-      return new Response(`Server Error: ${e.message}`, { status: 500 });
+      console.error('Worker error:', e);
+      return new Response(`Server Error: ${e.message}`, { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
     }
   }
 };

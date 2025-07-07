@@ -1,5 +1,13 @@
 import { corsHeaders } from '../utils/headers';
-import { nanoid } from 'nanoid';
+
+// Replace nanoid with a simpler UUID generator to avoid dependency issues
+function generateId() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
 export const handlePolicies = {
   async list(request, env) {
@@ -17,12 +25,21 @@ export const handlePolicies = {
       
       query += ' ORDER BY priority ASC, created_at DESC';
       
-      const { results } = await env.DB.prepare(query).bind(...params).all();
+      // Add a timeout to ensure we don't hang
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Database query timed out')), 5000);
+      });
+      
+      const queryPromise = env.DB.prepare(query).bind(...params).all();
+      
+      // Race the database query against the timeout
+      const { results } = await Promise.race([queryPromise, timeoutPromise]);
       
       return new Response(JSON.stringify({ policies: results || [] }), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     } catch (error) {
+      console.error('Policy list error:', error);
       return new Response(JSON.stringify({ error: 'Failed to list policies', details: error.message }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -33,9 +50,18 @@ export const handlePolicies = {
   async get(request, env) {
     try {
       const { id } = request.params;
-      const policy = await env.DB.prepare(
+      
+      // Add a timeout to ensure we don't hang
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Database query timed out')), 5000);
+      });
+      
+      const queryPromise = env.DB.prepare(
         'SELECT * FROM policies WHERE id = ?'
       ).bind(id).first();
+      
+      // Race the database query against the timeout
+      const policy = await Promise.race([queryPromise, timeoutPromise]);
       
       if (!policy) {
         return new Response(JSON.stringify({ error: 'Policy not found' }), {
@@ -44,13 +70,19 @@ export const handlePolicies = {
         });
       }
 
-      // Parse the JSON config
-      policy.config = JSON.parse(policy.config);
+      try {
+        // Parse the JSON config with error handling
+        policy.config = JSON.parse(policy.config);
+      } catch (parseError) {
+        console.error('Failed to parse policy config:', parseError);
+        policy.config = {}; // Provide a default if parsing fails
+      }
 
       return new Response(JSON.stringify(policy), {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
     } catch (error) {
+      console.error('Policy get error:', error);
       return new Response(JSON.stringify({ error: 'Failed to get policy', details: error.message }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -70,10 +102,16 @@ export const handlePolicies = {
         });
       }
 
-      // Check if network exists
-      const network = await env.DB.prepare(
+      // Check if network exists with timeout
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Database query timed out')), 5000);
+      });
+      
+      const networkQueryPromise = env.DB.prepare(
         'SELECT id FROM networks WHERE id = ?'
       ).bind(data.networkId).first();
+      
+      const network = await Promise.race([networkQueryPromise, timeoutPromise]);
       
       if (!network) {
         return new Response(JSON.stringify({ error: 'Network not found' }), {
@@ -82,7 +120,7 @@ export const handlePolicies = {
         });
       }
 
-      const id = nanoid();
+      const id = generateId();
       const timestamp = new Date().toISOString();
       const config = JSON.stringify(data.config);
 
