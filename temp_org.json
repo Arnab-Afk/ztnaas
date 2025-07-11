@@ -1,0 +1,6 @@
+{
+  "id": "org-123",
+  "name": "My Test Org",
+  "domain": "mytestorg.com",
+  "admin_email": "admin@mytestorg.com"
+}

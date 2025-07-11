@@ -1,12 +1,31 @@
 name = "ztbackend"
-main = "src/worker.js"
+main = "src/index.ts"
 workers_dev = true
 compatibility_date = "2025-07-05"
 
-[observability]
-enabled = true
+
 
 [[d1_databases]]
 binding = "DB" # available in your Worker on env.DB
 database_name = "ztnaas-db"
 database_id = "3e927505-e847-4b4b-897e-31aa2642dcce"
+
+[[durable_objects.bindings]]
+name = "NETWORK_MANAGER"
+class_name = "NetworkManager"
+
+[[durable_objects.bindings]]
+name = "POLICY_ENGINE"
+class_name = "PolicyEngine"
+
+[[kv_namespaces]]
+binding = "POLICIES"
+id = "6cde452e385842c69f7dc590e226142b"
+
+[[kv_namespaces]]
+binding="SESSIONS"
+id="3fe0027ce4ec491487536270e654b2e7"
+
+[[migrations]]
+tag = "v1"
+new_classes = [ "NetworkManager", "PolicyEngine" ]

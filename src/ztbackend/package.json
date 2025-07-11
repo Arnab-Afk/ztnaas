@@ -8,10 +8,14 @@
 		"start": "wrangler dev"
 	},
 	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20250708.0",
 		"wrangler": "^4.23.0"
 	},
 	"dependencies": {
+		"bcryptjs": "^3.0.2",
 		"itty-router": "^5.0.18",
-		"nanoid": "^5.1.5"
+		"jsonwebtoken": "^9.0.2",
+		"nanoid": "^5.1.5",
+		"zod": "^3.25.76"
 	}
 }
