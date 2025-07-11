@@ -23,10 +23,18 @@ app.get('/', async (c) => {
 });
 
 app.post('/', async (c) => {
-  const { id, name, domain, admin_email } = await c.req.json();
+  // Ensure the user is authenticated and their email is available
+  if (!c.req.user || !c.req.user.email) {
+    return c.json({ message: 'Unauthorized: User email not found in token' }, 401);
+  }
+
+  const userEmail = c.req.user.email;
+  const { id, name, domain } = await c.req.json();
+
+  // When creating an organization, automatically assign the authenticated user as the admin
   await c.env.DB.prepare(
     'INSERT INTO organizations (id, name, domain, admin_email) VALUES (?, ?, ?, ?)'
-  ).bind(id, name, domain, admin_email).run();
+  ).bind(id, name, domain, userEmail).run();
   return c.json({ message: 'Organization created' }, 201);
 });
 
