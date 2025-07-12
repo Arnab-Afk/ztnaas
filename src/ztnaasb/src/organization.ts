@@ -29,13 +29,14 @@ app.post('/', async (c) => {
   }
 
   const userEmail = c.req.user.email;
-  const { id, name, domain } = await c.req.json();
+  const { name, domain } = await c.req.json();
+  const id = crypto.randomUUID(); // Generate unique ID for the organization
 
   // When creating an organization, automatically assign the authenticated user as the admin
   await c.env.DB.prepare(
     'INSERT INTO organizations (id, name, domain, admin_email) VALUES (?, ?, ?, ?)'
   ).bind(id, name, domain, userEmail).run();
-  return c.json({ message: 'Organization created' }, 201);
+  return c.json({ message: 'Organization created', id: id }, 201);
 });
 
 app.get('/:id', async (c) => {
